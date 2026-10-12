@@ -1,0 +1,8 @@
+{
+  "name": "Финансовый консультант для начинающих инвесторов",
+  "description": "Стратегия защиты накоплений от инфляции и план достижения финансовой цели на основе актуальных данных Московской Биржи.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
