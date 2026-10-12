@@ -498,6 +498,11 @@ export default function App() {
   // Modal for broker explanation
   const [isBrokerModalOpen, setIsBrokerModalOpen] = useState<boolean>(false);
 
+  // Always scroll to top when changing steps (e.g. going from Step 7 to Step 8 Analytical Dashboard)
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, [currentStep]);
+
   // Set default slider values from questionnaire answers when reaching step 7
   useEffect(() => {
     if (currentStep === 7) {
@@ -737,7 +742,13 @@ export default function App() {
     }[] = [];
 
     let currentOfz = initialAmount;
+    let currentPrincipalInBonds = initialAmount;
+    let accumulatedCouponsCash = 0;
+
     let currentDeposit = initialAmount;
+    let currentDepositPrincipal = initialAmount;
+    let accumulatedDepositInterestCash = 0;
+
     let currentNominal = initialAmount;
     let cumulativeInflationMultiplier = 1.0;
 
@@ -763,16 +774,38 @@ export default function App() {
       for (let m = 1; m <= 12; m++) {
         currentNominal += monthlyContribution;
 
-        // OFZ: Locked yield with or without coupon reinvestment
+        // OFZ:
+        // With reinvestment (isReinvesting = true):
+        //   Coupons immediately buy new bonds, earning interest on interest (classic compound growth).
+        // Without reinvestment (isReinvesting = false):
+        //   Coupons are paid out to a separate cash/bank card account (they accumulate linearly at 0% or are withdrawn),
+        //   so only invested principal + new monthly contributions produce future coupons.
         if (isReinvesting) {
           currentOfz = (currentOfz + monthlyContribution) * (1 + ofzMonthlyRate);
         } else {
-          const couponThisMonth = currentOfz * ofzMonthlyRate;
-          currentOfz += monthlyContribution + couponThisMonth;
+          // Principal in bonds grows only by personal monthly contributions
+          currentPrincipalInBonds += monthlyContribution;
+          // Coupon is generated strictly from the current principal invested in bonds
+          const monthlyCoupon = currentPrincipalInBonds * ofzMonthlyRate;
+          accumulatedCouponsCash += monthlyCoupon;
+          // Total OFZ capital is principal in bonds + accumulated coupons on separate account
+          currentOfz = currentPrincipalInBonds + accumulatedCouponsCash;
         }
 
-        // Bank Deposit: compounded monthly at current year's CBR key rate
-        currentDeposit = (currentDeposit + monthlyContribution) * (1 + yearDepositMonthlyRate);
+        // Bank Deposit:
+        // With reinvestment (isReinvesting = true):
+        //   Monthly interest is capitalized onto the deposit balance (compound interest on interest).
+        // Without reinvestment (isReinvesting = false):
+        //   Monthly interest is paid out to a separate current account/card without capitalization,
+        //   so only invested principal + new monthly contributions earn future interest.
+        if (isReinvesting) {
+          currentDeposit = (currentDeposit + monthlyContribution) * (1 + yearDepositMonthlyRate);
+        } else {
+          currentDepositPrincipal += monthlyContribution;
+          const monthlyDepositInterest = currentDepositPrincipal * yearDepositMonthlyRate;
+          accumulatedDepositInterestCash += monthlyDepositInterest;
+          currentDeposit = currentDepositPrincipal + accumulatedDepositInterestCash;
+        }
       }
 
       const realPurchasingPower = currentNominal / cumulativeInflationMultiplier;
@@ -984,17 +1017,21 @@ export default function App() {
       </div>
 
       {/* Reinvest Toggle */}
-      <div className="pt-2 border-t border-white/10 flex items-center justify-between">
+      <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-4">
         <div>
-          <div className="text-xs font-semibold text-white">Реинвестировать купоны ОФЗ</div>
-          <div className="text-[11px] text-white/40">
-            {isReinvesting ? "Сложный процент: купоны покупают новые бумаги" : "Купоны накапливаются отдельно"}
+          <div className="text-xs font-semibold text-white">
+            Реинвестировать процентный доход (купоны по ОФЗ, проценты по вкладу)
+          </div>
+          <div className="text-[11px] text-white/40 mt-0.5 leading-snug">
+            {isReinvesting
+              ? "Сложный процент: купоны покупают новые бумаги, проценты по вкладу капитализируются"
+              : "Без реинвестирования: купоны ОФЗ и проценты по вкладу выплачиваются на отдельный счет"}
           </div>
         </div>
         <button
           type="button"
           onClick={() => setIsReinvesting(!isReinvesting)}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer ${
+          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer ${
             isReinvesting ? "bg-[#7863F6]" : "bg-white/20"
           }`}
         >
@@ -1438,7 +1475,10 @@ export default function App() {
           <div className="pt-2 text-center">
             <button
               type="button"
-              onClick={() => setCurrentStep(8)}
+              onClick={() => {
+                setCurrentStep(8);
+                window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+              }}
               className="w-full sm:w-auto min-w-[320px] inline-flex items-center justify-center gap-3 py-4 px-8 text-base font-bold text-white bg-gradient-to-r from-[#7863F6] via-[#6852ED] to-[#5B43E8] hover:brightness-110 active:scale-98 rounded-2xl shadow-[0_0_30px_rgba(120,99,246,0.4)] transition-all cursor-pointer"
             >
               <span>Получить стратегию</span>
@@ -2280,29 +2320,31 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating AI Assistant Chatbot Widget */}
-      <AiAssistantWidget
-        context={{
-          years,
-          initialAmount,
-          monthlyContribution,
-          totalContributions: finalNoToolsNominal,
-          finalOfzCapital,
-          finalDepositCapital,
-          ofzAdvantageOverDeposit,
-          inflationLossRub,
-          weightedYtm: portfolioMetrics.weightedYtm,
-          isReinvesting,
-          selectedBonds: availableBonds
-            .filter((b) => selectedBondIds.includes(b.secid))
-            .map((b) => ({
-              secid: b.secid,
-              name: b.name,
-              weight: bondWeights[b.secid] || 0,
-              ytm: b.ytm
-            }))
-        }}
-      />
+      {/* Floating AI Assistant Chatbot Widget - only appears on final Step 8 screen */}
+      {currentStep === 8 && (
+        <AiAssistantWidget
+          context={{
+            years,
+            initialAmount,
+            monthlyContribution,
+            totalContributions: finalNoToolsNominal,
+            finalOfzCapital,
+            finalDepositCapital,
+            ofzAdvantageOverDeposit,
+            inflationLossRub,
+            weightedYtm: portfolioMetrics.weightedYtm,
+            isReinvesting,
+            selectedBonds: availableBonds
+              .filter((b) => selectedBondIds.includes(b.secid))
+              .map((b) => ({
+                secid: b.secid,
+                name: b.name,
+                weight: bondWeights[b.secid] || 0,
+                ytm: b.ytm
+              }))
+          }}
+        />
+      )}
     </div>
   );
 }

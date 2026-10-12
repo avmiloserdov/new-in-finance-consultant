@@ -93,8 +93,8 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
       context.ofzAdvantageOverDeposit
     ).toLocaleString("ru-RU")} руб. Потери от инфляции без инструментов: -${Math.round(
       context.inflationLossRub
-    ).toLocaleString("ru-RU")} руб. Реинвестирование купонов: ${
-      context.isReinvesting ? "Включено" : "Выключено"
+    ).toLocaleString("ru-RU")} руб. Реинвестирование процентных доходов (купоны ОФЗ и капитализация вклада): ${
+      context.isReinvesting ? "Включено (сложный процент)" : "Выключено (выплата на отдельный счет без сложного процента)"
     }. Выбранные бумаги: ${bondsStr || "ОФЗ 26245, ОФЗ 26252"}. Прогноз ставки ЦБ: плавное снижение с 19% до 8%.]`;
   };
 
@@ -255,12 +255,7 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
             </div>
           </div>
 
-          {/* Context Preview Bar */}
-          <div className="px-4 py-2 bg-[#121420] border-b border-white/5 flex items-center justify-between text-[11px] text-white/50 font-mono">
-            <span>Горизонт: {context.years} лет</span>
-            <span>ОФЗ YTM: {context.weightedYtm.toFixed(1)}%</span>
-            <span className="text-emerald-400">+{Math.round(context.ofzAdvantageOverDeposit).toLocaleString("ru-RU")} ₽ выигрыш</span>
-          </div>
+
 
           {/* Message Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
