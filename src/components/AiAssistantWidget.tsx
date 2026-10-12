@@ -50,6 +50,10 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [dragOffset, setDragOffset] = useState<number>(0);
+  const touchStartY = useRef<number | null>(null);
+  const isDragging = useRef<boolean>(false);
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -71,6 +75,29 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
       }, 100);
     }
   }, [isOpen, messages, isLoading]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+    isDragging.current = true;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging.current || touchStartY.current === null) return;
+    const currentY = e.touches[0].clientY;
+    const delta = currentY - touchStartY.current;
+    if (delta > 0) {
+      setDragOffset(delta);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (dragOffset > 90) {
+      setIsOpen(false);
+    }
+    setDragOffset(0);
+    isDragging.current = false;
+    touchStartY.current = null;
+  };
 
   const formatContextString = (): string => {
     const bondsStr = context.selectedBonds
@@ -179,7 +206,7 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
   return (
     <>
       {/* Floating Action Button (FAB) */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+      <div className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-3">
         {!isOpen && (
           <div
             onClick={() => setIsOpen(true)}
@@ -194,7 +221,7 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "Закрыть чат" : "Открыть финансовый AI-ассистент"}
-          className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-[0_0_25px_rgba(120,99,246,0.5)] cursor-pointer ${
+          className={`w-13 h-13 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-[0_0_25px_rgba(120,99,246,0.5)] cursor-pointer ${
             isOpen
               ? "bg-[#1f1d38] border border-white/20 text-white hover:bg-[#282647] rotate-90"
               : "bg-gradient-to-r from-[#7863F6] via-[#6852ED] to-[#4F46E5] text-white hover:scale-108 hover:shadow-[0_0_35px_rgba(120,99,246,0.8)]"
@@ -212,13 +239,40 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
         </button>
       </div>
 
-      {/* Chat Window Modal */}
+      {/* Mobile Backdrop */}
       {isOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[92vw] sm:w-[420px] max-w-[440px] h-[580px] max-h-[82vh] bg-[#0F111A] border border-[#7863F6]/30 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden backdrop-blur-2xl animate-fade-in font-sans">
+        <div
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 sm:hidden"
+        />
+      )}
+
+      {/* Chat Window / Bottom Sheet */}
+      {isOpen && (
+        <div
+          style={dragOffset > 0 ? { transform: `translateY(${dragOffset}px)` } : undefined}
+          className="fixed inset-x-0 bottom-0 top-12 sm:top-auto sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[420px] sm:max-w-[440px] sm:h-[580px] sm:max-h-[82vh] z-50 bg-[#0F111A] border-t sm:border border-[#7863F6]/40 rounded-t-3xl sm:rounded-3xl shadow-[0_-15px_50px_rgba(0,0,0,0.8)] sm:shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden backdrop-blur-2xl animate-fade-in font-sans transition-transform duration-75"
+        >
+          {/* Mobile Swipe-down Handle */}
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className="sm:hidden pt-3 pb-1.5 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing select-none bg-[#161825]"
+          >
+            <div className="w-12 h-1.5 bg-white/30 rounded-full" />
+            <span className="text-[10px] text-white/40 mt-1 font-mono">Потяните вниз, чтобы свернуть</span>
+          </div>
+
           {/* Header */}
-          <div className="px-5 py-4 bg-[#161825] border-b border-white/10 flex items-center justify-between">
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className="px-5 py-3.5 sm:py-4 bg-[#161825] border-b border-white/10 flex items-center justify-between select-none"
+          >
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7863F6] to-[#4F46E5] flex items-center justify-center shadow-[0_0_12px_rgba(120,99,246,0.5)]">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7863F6] to-[#4F46E5] flex items-center justify-center shadow-[0_0_12px_rgba(120,99,246,0.5)] shrink-0">
                 <Bot className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -229,8 +283,8 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
                   </span>
                 </div>
                 <div className="text-[11px] text-white/50 flex items-center gap-1.5 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                  <span>Видит данные вашего дашборда</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
+                  <span className="truncate">Видит данные вашего дашборда</span>
                 </div>
               </div>
             </div>
@@ -240,7 +294,7 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
                 type="button"
                 onClick={handleClearHistory}
                 title="Очистить историю"
-                className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -248,7 +302,7 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
                 type="button"
                 onClick={() => setIsOpen(false)}
                 title="Закрыть"
-                className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -351,7 +405,7 @@ export function AiAssistantWidget({ context }: { context: DashboardContextData }
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Спросите о YTM, купонах или расчете..."
                 disabled={isLoading}
-                className="flex-1 bg-white/5 border border-white/10 focus:border-[#7863F6] focus:ring-1 focus:ring-[#7863F6] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder:text-white/40 outline-none transition-all disabled:opacity-50"
+                className="flex-1 bg-white/5 border border-white/10 focus:border-[#7863F6] focus:ring-1 focus:ring-[#7863F6] rounded-xl px-3.5 py-2.5 text-base sm:text-sm text-white placeholder:text-white/40 outline-none transition-all disabled:opacity-50"
               />
               <button
                 type="submit"

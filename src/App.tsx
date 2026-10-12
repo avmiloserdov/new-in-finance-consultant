@@ -920,11 +920,11 @@ export default function App() {
 
   // Reusable Sliders Component for both Step 7 and Step 8 (bottom interactive simulator)
   const renderSlidersBlock = (isBottomSimulator = false) => (
-    <div className="bg-[#101017] border border-white/10 rounded-2xl p-5 sm:p-6 space-y-5 shadow-xl">
-      <div className="flex items-center justify-between border-b border-white/10 pb-3">
+    <div className="bg-[#101017] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-5 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-white/10 pb-3 gap-2">
         <div>
           <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-[#7863F6]" />
+            <Sliders className="w-4 h-4 text-[#7863F6] shrink-0" />
             <span>{isBottomSimulator ? "Интерактивный симулятор параметров" : "Стартовые параметры расчета"}</span>
           </h3>
           <p className="text-[11px] text-white/50 mt-0.5">
@@ -933,7 +933,7 @@ export default function App() {
               : "Укажите ваши текущие накопления, ежемесячный взнос и горизонт"}
           </p>
         </div>
-        <div className="text-xs font-mono text-cyan-400">
+        <div className="text-xs font-mono text-cyan-400 self-start sm:self-auto">
           ОФЗ YTM: <span className="font-bold text-white">{portfolioMetrics.weightedYtm.toFixed(1)}%</span>
         </div>
       </div>
@@ -953,14 +953,14 @@ export default function App() {
           step={5000}
           value={initialAmount}
           onChange={(e) => setInitialAmount(Number(e.target.value))}
-          className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#7863F6]"
+          className="w-full h-2.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#7863F6]"
         />
-        <div className="flex items-center justify-between text-[10px] text-white/40 font-mono">
-          <button type="button" onClick={() => setInitialAmount(0)} className="hover:text-white cursor-pointer">0 ₽</button>
-          <button type="button" onClick={() => setInitialAmount(50000)} className="hover:text-white cursor-pointer">50 000 ₽</button>
-          <button type="button" onClick={() => setInitialAmount(150000)} className="hover:text-white cursor-pointer">150 000 ₽</button>
-          <button type="button" onClick={() => setInitialAmount(500000)} className="hover:text-white cursor-pointer">500 000 ₽</button>
-          <button type="button" onClick={() => setInitialAmount(1000000)} className="hover:text-white cursor-pointer">1 000 000 ₽</button>
+        <div className="flex items-center justify-between text-[10px] text-white/40 font-mono gap-1 overflow-x-auto py-0.5">
+          <button type="button" onClick={() => setInitialAmount(0)} className="hover:text-white cursor-pointer px-1">0 ₽</button>
+          <button type="button" onClick={() => setInitialAmount(50000)} className="hover:text-white cursor-pointer px-1">50 тыс</button>
+          <button type="button" onClick={() => setInitialAmount(150000)} className="hover:text-white cursor-pointer px-1">150 тыс</button>
+          <button type="button" onClick={() => setInitialAmount(500000)} className="hover:text-white cursor-pointer px-1">500 тыс</button>
+          <button type="button" onClick={() => setInitialAmount(1000000)} className="hover:text-white cursor-pointer px-1">1 млн ₽</button>
         </div>
       </div>
 
@@ -979,14 +979,14 @@ export default function App() {
           step={1000}
           value={monthlyContribution}
           onChange={(e) => setMonthlyContribution(Number(e.target.value))}
-          className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#7863F6]"
+          className="w-full h-2.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#7863F6]"
         />
-        <div className="flex items-center justify-between text-[10px] text-white/40 font-mono">
-          <button type="button" onClick={() => setMonthlyContribution(5000)} className="hover:text-white cursor-pointer">5 000 ₽</button>
-          <button type="button" onClick={() => setMonthlyContribution(15000)} className="hover:text-white cursor-pointer">15 000 ₽</button>
-          <button type="button" onClick={() => setMonthlyContribution(30000)} className="hover:text-white cursor-pointer">30 000 ₽</button>
-          <button type="button" onClick={() => setMonthlyContribution(50000)} className="hover:text-white cursor-pointer">50 000 ₽</button>
-          <button type="button" onClick={() => setMonthlyContribution(100000)} className="hover:text-white cursor-pointer">100 000 ₽</button>
+        <div className="flex items-center justify-between text-[10px] text-white/40 font-mono gap-1 overflow-x-auto py-0.5">
+          <button type="button" onClick={() => setMonthlyContribution(5000)} className="hover:text-white cursor-pointer px-1">5 тыс</button>
+          <button type="button" onClick={() => setMonthlyContribution(15000)} className="hover:text-white cursor-pointer px-1">15 тыс</button>
+          <button type="button" onClick={() => setMonthlyContribution(30000)} className="hover:text-white cursor-pointer px-1">30 тыс</button>
+          <button type="button" onClick={() => setMonthlyContribution(50000)} className="hover:text-white cursor-pointer px-1">50 тыс</button>
+          <button type="button" onClick={() => setMonthlyContribution(100000)} className="hover:text-white cursor-pointer px-1">100 тыс</button>
         </div>
       </div>
 
@@ -1005,20 +1005,20 @@ export default function App() {
           step={1}
           value={years}
           onChange={(e) => setYears(Number(e.target.value))}
-          className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#7863F6]"
+          className="w-full h-2.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#7863F6]"
         />
-        <div className="flex items-center justify-between text-[10px] text-white/40 font-mono">
-          <button type="button" onClick={() => setYears(1)} className="hover:text-white cursor-pointer">1 год</button>
-          <button type="button" onClick={() => setYears(3)} className="hover:text-white cursor-pointer">3 года</button>
-          <button type="button" onClick={() => setYears(5)} className="hover:text-white cursor-pointer">5 лет</button>
-          <button type="button" onClick={() => setYears(7)} className="hover:text-white cursor-pointer">7 лет</button>
-          <button type="button" onClick={() => setYears(10)} className="hover:text-white cursor-pointer">10 лет</button>
+        <div className="flex items-center justify-between text-[10px] text-white/40 font-mono gap-1 overflow-x-auto py-0.5">
+          <button type="button" onClick={() => setYears(1)} className="hover:text-white cursor-pointer px-1">1 год</button>
+          <button type="button" onClick={() => setYears(3)} className="hover:text-white cursor-pointer px-1">3 года</button>
+          <button type="button" onClick={() => setYears(5)} className="hover:text-white cursor-pointer px-1">5 лет</button>
+          <button type="button" onClick={() => setYears(7)} className="hover:text-white cursor-pointer px-1">7 лет</button>
+          <button type="button" onClick={() => setYears(10)} className="hover:text-white cursor-pointer px-1">10 лет</button>
         </div>
       </div>
 
       {/* Reinvest Toggle */}
-      <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-4">
-        <div>
+      <div className="pt-2 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex-1">
           <div className="text-xs font-semibold text-white">
             Реинвестировать процентный доход (купоны по ОФЗ, проценты по вкладу)
           </div>
@@ -1028,23 +1028,28 @@ export default function App() {
               : "Без реинвестирования: купоны ОФЗ и проценты по вкладу выплачиваются на отдельный счет"}
           </div>
         </div>
-        <button
-          type="button"
-          onClick={() => setIsReinvesting(!isReinvesting)}
-          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer ${
-            isReinvesting ? "bg-[#7863F6]" : "bg-white/20"
-          }`}
-        >
-          <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              isReinvesting ? "translate-x-6" : "translate-x-1"
+        <div className="flex items-center justify-between sm:justify-end gap-3 self-stretch sm:self-center">
+          <span className="sm:hidden text-xs text-white/60 font-medium">
+            {isReinvesting ? "Включено" : "Выключено"}
+          </span>
+          <button
+            type="button"
+            onClick={() => setIsReinvesting(!isReinvesting)}
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer ${
+              isReinvesting ? "bg-[#7863F6]" : "bg-white/20"
             }`}
-          />
-        </button>
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                isReinvesting ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Quick Summary of Values */}
-      <div className="grid grid-cols-2 gap-3 pt-2 text-xs font-mono bg-white/5 p-3 rounded-xl border border-white/10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 pt-2 text-xs font-mono bg-white/5 p-3 rounded-xl border border-white/10">
         <div>
           <div className="text-white/40 text-[11px]">Сумма личных пополнений:</div>
           <div className="text-white font-bold text-sm mt-0.5">
@@ -1077,9 +1082,9 @@ export default function App() {
       {/* VIEWPORT MODE A: QUESTIONNAIRE & LOADING (STEPS 1..6)    */}
       {/* ======================================================== */}
       {currentStep <= 6 ? (
-        <div className="flex-1 flex flex-col lg:flex-row min-h-screen overflow-hidden">
-          {/* Left Column: Cyber Grid & Mission */}
-          <div className="relative flex-1 bg-[#050508] p-8 sm:p-12 lg:p-16 flex flex-col justify-between overflow-hidden border-b lg:border-b-0 lg:border-r border-white/10">
+        <div className="flex-1 flex flex-col lg:flex-row min-h-screen overflow-y-auto lg:overflow-hidden">
+          {/* Desktop Left Column: Cyber Grid & Mission (Hidden on mobile) */}
+          <div className="hidden lg:flex relative flex-1 bg-[#050508] p-8 sm:p-12 lg:p-16 flex-col justify-between overflow-hidden border-r border-white/10">
             <div
               className="absolute inset-0 pointer-events-none opacity-20"
               style={{
@@ -1136,8 +1141,61 @@ export default function App() {
           </div>
 
           {/* Right Column: Interactive Quiz Panels */}
-          <div className="relative flex-1 bg-gradient-to-br from-[#6852ED] via-[#5B43E8] to-[#462BC7] p-6 sm:p-12 lg:p-16 flex flex-col justify-between overflow-y-auto">
-            <div className="flex items-center justify-between pb-4">
+          <div className="relative flex-1 bg-gradient-to-br from-[#6852ED] via-[#5B43E8] to-[#462BC7] p-4 sm:p-8 lg:p-16 flex flex-col justify-between min-h-screen lg:min-h-0 overflow-y-auto">
+            {/* Mobile-Only Compact Header */}
+            <div className="lg:hidden pb-4 space-y-2.5">
+              <div className="flex items-center justify-between">
+                {currentStep > 1 ? (
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/20 text-white text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Назад</span>
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2 text-white/80 text-xs font-mono">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                    <span className="font-semibold">Консультант</span>
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2">
+                  {currentStep >= 1 && currentStep <= 5 && (
+                    <div className="text-xs font-mono font-bold text-cyan-200 bg-cyan-950/60 border border-cyan-400/40 px-2.5 py-1 rounded-full">
+                      Вопрос {currentStep} / 5
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleRestart}
+                    className="p-1.5 text-white/70 hover:text-white rounded-lg hover:bg-white/15 transition-colors cursor-pointer"
+                    title="Начать заново"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {currentStep >= 1 && currentStep <= 5 && (
+                <div className="space-y-1">
+                  <div className="w-full bg-black/25 h-1.5 rounded-full overflow-hidden">
+                    <div
+                      className="bg-white h-full transition-all duration-300 ease-out"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-white/60 font-mono">
+                    <span>{QUESTIONS[currentStep - 1]?.kicker || "Вопрос"}</span>
+                    <span>{progressPercent}% пройдено</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop-Only Header */}
+            <div className="hidden lg:flex items-center justify-between pb-4">
               <div className="text-xs font-medium text-white/70">
                 {currentStep >= 1 && currentStep <= 5
                   ? `Прогресс опроса: ${progressPercent}%`
@@ -1154,7 +1212,7 @@ export default function App() {
             </div>
 
             {currentStep >= 1 && currentStep <= 5 && (
-              <div className="w-full bg-black/20 h-1 rounded-full mb-8 overflow-hidden">
+              <div className="hidden lg:block w-full bg-black/20 h-1 rounded-full mb-8 overflow-hidden">
                 <div
                   className="bg-white h-full transition-all duration-300 ease-out"
                   style={{ width: `${progressPercent}%` }}
@@ -1374,7 +1432,7 @@ export default function App() {
         /* VIEWPORT MODE B: STEP 7 — PROFILE CONCLUSION & SLIDERS   */
         /* As requested: Profile Conclusion -> Sliders -> Button    */
         /* ======================================================== */
-        <div className="flex-1 flex flex-col justify-between py-8 px-4 sm:px-8 max-w-4xl mx-auto w-full animate-fade-in space-y-8">
+        <div className="flex-1 flex flex-col justify-between py-6 sm:py-8 px-3.5 sm:px-8 max-w-4xl mx-auto w-full animate-fade-in space-y-6 sm:space-y-8">
           {/* Top Bar */}
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <div className="flex items-center gap-2.5">
@@ -1389,34 +1447,34 @@ export default function App() {
               className="inline-flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Пройти опрос заново</span>
+              <span>Пройти заново</span>
             </button>
           </div>
 
           {/* 1. Profile Conclusion Card */}
-          <div className="bg-gradient-to-br from-[#17142d] via-[#141224] to-[#0c0a18] border border-[#7863F6]/40 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden space-y-6">
+          <div className="bg-gradient-to-br from-[#17142d] via-[#141224] to-[#0c0a18] border border-[#7863F6]/40 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden space-y-5 sm:space-y-6">
             <div className="absolute top-0 right-0 w-80 h-80 bg-[#7863F6]/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="relative z-10 space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold font-mono uppercase tracking-wider bg-[#7863F6]/20 text-[#c2b6ff] border border-[#7863F6]/40">
-                <ShieldCheck className="w-4 h-4 text-cyan-400" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold font-mono uppercase tracking-wider bg-[#7863F6]/20 text-[#c2b6ff] border border-[#7863F6]/40">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 shrink-0" />
                 <span>{profile.statusBadge}</span>
               </div>
-              <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
                 {profile.title}
               </h1>
-              <p className="text-sm sm:text-base text-white/70 leading-relaxed max-w-2xl">
+              <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-2xl">
                 {profile.summary}
               </p>
             </div>
 
             {/* Proposed Portfolio Structure: OFZ + Deposit */}
-            <div className="relative z-10 bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div className="relative z-10 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
                 <div className="text-xs font-mono uppercase tracking-wider text-cyan-300 font-bold">
                   Предлагаемый портфель: ОФЗ + Банковский вклад
                 </div>
-                <div className="text-xs text-white/50">
+                <div className="text-[11px] sm:text-xs text-white/50">
                   Баланс надежности и доходности
                 </div>
               </div>
@@ -1428,11 +1486,11 @@ export default function App() {
               </div>
 
               {/* 2 Column Detail Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-                <div className="bg-black/30 border border-[#7863F6]/30 rounded-xl p-4 space-y-1.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-1">
+                <div className="bg-black/30 border border-[#7863F6]/30 rounded-xl p-3.5 sm:p-4 space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-sm text-purple-200 flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#7863F6]" />
+                    <span className="font-bold text-xs sm:text-sm text-purple-200 flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#7863F6] shrink-0" />
                       70% — Облигации (ОФЗ)
                     </span>
                     <span className="text-xs font-mono font-bold text-emerald-400">15–17% YTM</span>
@@ -1442,10 +1500,10 @@ export default function App() {
                   </p>
                 </div>
 
-                <div className="bg-black/30 border border-cyan-500/30 rounded-xl p-4 space-y-1.5">
+                <div className="bg-black/30 border border-cyan-500/30 rounded-xl p-3.5 sm:p-4 space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-sm text-cyan-200 flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#38bdf8]" />
+                    <span className="font-bold text-xs sm:text-sm text-cyan-200 flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#38bdf8] shrink-0" />
                       30% — Банковский вклад
                     </span>
                     <span className="text-xs font-mono font-bold text-cyan-300">Ликвидность</span>
@@ -1457,7 +1515,7 @@ export default function App() {
               </div>
 
               {/* 3 Key Advantages of this mix */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-1 text-xs">
                 {profile.keyAdvantages.map((adv, idx) => (
                   <div key={idx} className="bg-white/5 rounded-xl p-3 border border-white/5 space-y-1">
                     <div className="font-bold text-white/90 text-[11px]">{adv.title}</div>
@@ -1479,7 +1537,7 @@ export default function App() {
                 setCurrentStep(8);
                 window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
               }}
-              className="w-full sm:w-auto min-w-[320px] inline-flex items-center justify-center gap-3 py-4 px-8 text-base font-bold text-white bg-gradient-to-r from-[#7863F6] via-[#6852ED] to-[#5B43E8] hover:brightness-110 active:scale-98 rounded-2xl shadow-[0_0_30px_rgba(120,99,246,0.4)] transition-all cursor-pointer"
+              className="w-full sm:w-auto sm:min-w-[320px] inline-flex items-center justify-center gap-3 py-4 px-8 text-base font-bold text-white bg-gradient-to-r from-[#7863F6] via-[#6852ED] to-[#5B43E8] hover:brightness-110 active:scale-98 rounded-2xl shadow-[0_0_30px_rgba(120,99,246,0.4)] transition-all cursor-pointer"
             >
               <span>Получить стратегию</span>
               <ArrowRight className="w-5 h-5 text-cyan-300" />
@@ -1494,61 +1552,61 @@ export default function App() {
         /* VIEWPORT MODE C: STEP 8 — FULL ANALYTICAL DASHBOARD      */
         /* Comparison Charts + MOEX Bonds + Bottom Sliders          */
         /* ======================================================== */
-        <div className="w-full max-w-6xl mx-auto p-4 sm:p-8 space-y-8 animate-fade-in">
+        <div className="w-full max-w-6xl mx-auto p-3.5 sm:p-8 space-y-6 sm:space-y-8 animate-fade-in">
           {/* Top Header Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-white/10 pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 border-b border-white/10 pb-4 sm:pb-5">
             <div className="flex items-center gap-3">
-              <div className="w-3.5 h-3.5 bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
+              <div className="w-3.5 h-3.5 bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.8)] shrink-0" />
               <div>
-                <h1 className="text-lg sm:text-2xl font-bold tracking-tight text-white uppercase font-mono">
+                <h1 className="text-base sm:text-2xl font-bold tracking-tight text-white uppercase font-mono">
                   Аналитическая стратегия: ОФЗ vs Вклад vs Инфляция
                 </h1>
-                <p className="text-xs text-white/50 mt-0.5">
+                <p className="text-[11px] sm:text-xs text-white/50 mt-0.5">
                   Моделирование на основе открытого API Мосбиржи TQOB и среднесрочных прогнозов Банка России
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-start sm:self-center">
+            <div className="flex items-center gap-2 self-stretch sm:self-center justify-between sm:justify-start">
               <button
                 type="button"
                 onClick={() => setCurrentStep(7)}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-white/80 hover:text-white bg-white/10 hover:bg-white/15 border border-white/15 transition-colors cursor-pointer"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white/80 hover:text-white bg-white/10 hover:bg-white/15 border border-white/15 transition-colors cursor-pointer"
               >
                 <Sliders className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Изменить параметры</span>
+                <span>Параметры</span>
               </button>
               <button
                 type="button"
                 onClick={handleRestart}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-white/60 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors cursor-pointer"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white/60 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Опрос заново</span>
+                <span>Заново</span>
               </button>
             </div>
           </div>
 
           {/* Legal / Non-advisory Disclaimer Pill */}
-          <div className="bg-[#12111d] border border-white/10 rounded-xl p-3.5 flex items-start gap-3 text-xs text-white/70">
+          <div className="bg-[#12111d] border border-white/10 rounded-xl p-3 sm:p-3.5 flex items-start gap-2.5 sm:gap-3 text-xs text-white/70">
             <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-            <div className="leading-relaxed">
+            <div className="leading-relaxed text-[11px] sm:text-xs">
               <span className="font-semibold text-white">Интерактивный аналитический калькулятор:</span> Не является индивидуальной инвестиционной рекомендацией (ИИР). Моделирование показывает поведение инструментов при динамике ставки ЦБ РФ и уровне инфляции.
             </div>
           </div>
 
           {/* 4 Cards: OFZ vs Deposit vs Pillow vs Inflation */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {/* Card 1: OFZ Portfolio Capital */}
             <div className="bg-gradient-to-br from-[#1a1538] to-[#121024] border border-[#7863F6]/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xl">
               <div className="flex items-center justify-between text-xs text-white/60">
                 <span className="font-semibold text-purple-300 flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#7863F6]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#7863F6] shrink-0" />
                   Портфель ОФЗ
                 </span>
                 <span className="font-mono text-cyan-300">{portfolioMetrics.weightedYtm.toFixed(1)}% YTM</span>
               </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-white font-mono tabular-nums mt-2">
+              <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white font-mono tabular-nums mt-2">
                 {Math.round(animFinalOfz).toLocaleString("ru-RU")} ₽
               </div>
               <div className="text-xs text-emerald-400 mt-1 font-mono">
@@ -1563,20 +1621,20 @@ export default function App() {
             <div className="bg-gradient-to-br from-[#0c1a2e] to-[#07111f] border border-cyan-500/30 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xl">
               <div className="flex items-center justify-between text-xs text-white/60">
                 <span className="font-semibold text-cyan-300 flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#38bdf8]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#38bdf8] shrink-0" />
                   Вклад (прогноз ЦБ)
                 </span>
                 <span className="font-mono text-white/50">ставка падает</span>
               </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-cyan-100 font-mono tabular-nums mt-2">
+              <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-cyan-100 font-mono tabular-nums mt-2">
                 {Math.round(animFinalDeposit).toLocaleString("ru-RU")} ₽
               </div>
               <div className="text-xs text-emerald-300 mt-1 font-mono">
                 +{Math.round(totalProfitDeposit).toLocaleString("ru-RU")} ₽ прибыль
               </div>
               <div className="text-[11px] text-cyan-400/90 font-semibold mt-2 border-t border-white/10 pt-2 flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5 text-cyan-400" />
-                <span>ОФЗ дают на +{Math.round(animAdvantage).toLocaleString("ru-RU")} ₽ больше</span>
+                <TrendingUp className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                <span className="truncate">ОФЗ дают на +{Math.round(animAdvantage).toLocaleString("ru-RU")} ₽ больше</span>
               </div>
             </div>
 
@@ -1584,12 +1642,12 @@ export default function App() {
             <div className="bg-[#101017] border border-white/10 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xl">
               <div className="flex items-center justify-between text-xs text-white/60">
                 <span className="font-semibold text-white/80 flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-slate-400" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0" />
                   Без инструментов
                 </span>
                 <span className="font-mono text-white/40">0% годовых</span>
               </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-white/90 font-mono tabular-nums mt-2">
+              <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white/90 font-mono tabular-nums mt-2">
                 {Math.round(finalNoToolsNominal).toLocaleString("ru-RU")} ₽
               </div>
               <div className="text-xs text-white/40 mt-1 font-mono">
@@ -1604,16 +1662,16 @@ export default function App() {
             <div className="bg-gradient-to-br from-[#240e16] to-[#14080e] border border-rose-500/30 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xl">
               <div className="flex items-center justify-between text-xs text-white/60">
                 <span className="font-semibold text-rose-300 flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#f43f5e]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#f43f5e] shrink-0" />
                   Реальная ценность
                 </span>
                 <span className="font-mono text-rose-400/80">с инфляцией</span>
               </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-rose-200 font-mono tabular-nums mt-2">
+              <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-rose-200 font-mono tabular-nums mt-2">
                 {Math.round(finalInflationPurchasingPower).toLocaleString("ru-RU")} ₽
               </div>
               <div className="text-xs text-rose-400 mt-1 font-mono flex items-center gap-1">
-                <TrendingDown className="w-3.5 h-3.5" />
+                <TrendingDown className="w-3.5 h-3.5 shrink-0" />
                 <span>-{Math.round(animInflationLoss).toLocaleString("ru-RU")} ₽ ({inflationLossPercent.toFixed(0)}%)</span>
               </div>
               <div className="text-[11px] text-rose-300/80 mt-2 border-t border-white/10 pt-2">
@@ -1802,11 +1860,11 @@ export default function App() {
               <div className="bg-[#101017] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-6">
                 {/* Visual Tab Selector */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-white/10 pb-4">
-                  <div className="flex items-center gap-1.5 p-1 bg-white/5 border border-white/10 rounded-xl overflow-x-auto">
+                  <div className="flex items-center gap-1.5 p-1 bg-white/5 border border-white/10 rounded-xl overflow-x-auto max-w-full py-1">
                     <button
                       type="button"
                       onClick={() => setActiveVisualTab("comparison")}
-                      className={`px-3.5 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+                      className={`shrink-0 px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
                         activeVisualTab === "comparison"
                           ? "bg-[#7863F6] text-white shadow-md"
                           : "text-white/60 hover:text-white"
@@ -1817,7 +1875,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => setActiveVisualTab("ofzGrowth")}
-                      className={`px-3.5 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+                      className={`shrink-0 px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
                         activeVisualTab === "ofzGrowth"
                           ? "bg-[#7863F6] text-white shadow-md"
                           : "text-white/60 hover:text-white"
@@ -1828,7 +1886,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => setActiveVisualTab("cashflow")}
-                      className={`px-3.5 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+                      className={`shrink-0 px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
                         activeVisualTab === "cashflow"
                           ? "bg-[#7863F6] text-white shadow-md"
                           : "text-white/60 hover:text-white"
@@ -2173,29 +2231,92 @@ export default function App() {
                 )}
               </div>
 
-              {/* MOEX API Bonds Table */}
-              <div className="bg-[#101017] border border-white/10 rounded-2xl p-5 shadow-xl space-y-3">
-                <div className="flex items-center justify-between">
+              {/* MOEX API Bonds Table / Mobile Cards */}
+              <div className="bg-[#101017] border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/10 pb-3">
                   <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                    <Landmark className="w-3.5 h-3.5 text-cyan-400" />
-                    Таблица котировок TQOB с открытого API Мосбиржи
+                    <Landmark className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                    Таблица котировок TQOB с Московской Биржи
                   </span>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2.5 self-start sm:self-auto">
                     {ofzFetchedAt && (
-                      <span className="text-[11px] text-white/40 font-mono">Обновлено: {ofzFetchedAt}</span>
+                      <span className="text-[10px] sm:text-[11px] text-white/40 font-mono">Обновлено: {ofzFetchedAt}</span>
                     )}
                     <button
                       type="button"
                       onClick={handleRunOfzScript}
                       disabled={ofzLoading}
-                      className="px-2.5 py-1 text-[11px] font-semibold text-white bg-white/10 hover:bg-white/20 rounded-md transition-colors cursor-pointer"
+                      className="px-2.5 py-1 text-[11px] font-semibold text-white bg-white/10 hover:bg-white/20 active:bg-white/25 rounded-md transition-colors cursor-pointer"
                     >
                       {ofzLoading ? "Загрузка..." : "Обновить"}
                     </button>
                   </div>
                 </div>
 
-                <div className="overflow-x-auto text-xs">
+                {/* Mobile View: Compact Responsive Cards */}
+                <div className="block sm:hidden space-y-2.5 pt-1">
+                  {availableBonds.map((b) => {
+                    const isSel = selectedBondIds.includes(b.secid);
+                    const viridis = getViridisStyle(b.score, 50, 65);
+                    return (
+                      <div
+                        key={b.secid}
+                        onClick={() => handleToggleBond(b.secid)}
+                        className={`p-3 rounded-xl border transition-all cursor-pointer ${
+                          isSel
+                            ? "bg-[#1d1938] border-[#7863F6] ring-1 ring-[#7863F6]/50 shadow-md"
+                            : "bg-white/5 border-white/10 opacity-75 hover:opacity-100"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-start gap-2">
+                            <div
+                              className={`w-4 h-4 rounded mt-0.5 flex items-center justify-center text-[10px] font-bold shrink-0 ${
+                                isSel ? "bg-[#7863F6] text-white" : "bg-white/10 text-white/40 border border-white/20"
+                              }`}
+                            >
+                              {isSel ? "✓" : "+"}
+                            </div>
+                            <div>
+                              <div className="font-bold text-xs text-white flex items-center gap-1.5">
+                                <span>{b.name}</span>
+                                {isSel && (
+                                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#7863F6]/30 text-purple-200 font-mono">
+                                    В портфеле
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-[10px] text-white/50 font-mono mt-0.5">{b.secid}</div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded font-mono" style={viridis}>
+                              {b.score.toFixed(1)}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-white/10 text-center font-mono">
+                          <div className="bg-black/20 rounded-lg p-1.5">
+                            <div className="text-[10px] text-white/40">Срок</div>
+                            <div className="text-xs font-bold text-white mt-0.5">{b.years_left.toFixed(1)} г</div>
+                          </div>
+                          <div className="bg-black/20 rounded-lg p-1.5">
+                            <div className="text-[10px] text-white/40">Доходность</div>
+                            <div className="text-xs font-bold text-emerald-400 mt-0.5">{b.ytm.toFixed(1)}%</div>
+                          </div>
+                          <div className="bg-black/20 rounded-lg p-1.5">
+                            <div className="text-[10px] text-white/40">Купон</div>
+                            <div className="text-xs font-bold text-cyan-300 mt-0.5">{b.coupon_pct.toFixed(1)}%</div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Desktop/Tablet View: Full Table */}
+                <div className="hidden sm:block overflow-x-auto text-xs">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="border-b border-white/10 text-[11px] text-white/50 font-semibold">
